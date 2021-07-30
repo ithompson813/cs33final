@@ -8,7 +8,7 @@ from .models import User
 
 
 def index(request):
-    return render(request, "network/index.html")
+    return render(request, "chat/index.html")
 
 
 def login_view(request):
@@ -24,11 +24,11 @@ def login_view(request):
             login(request, user)
             return HttpResponseRedirect(reverse("index"))
         else:
-            return render(request, "network/login.html", {
+            return render(request, "chat/login.html", {
                 "message": "Invalid username and/or password."
             })
     else:
-        return render(request, "network/login.html")
+        return render(request, "chat/login.html")
 
 
 def logout_view(request):
@@ -45,7 +45,7 @@ def register(request):
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
         if password != confirmation:
-            return render(request, "network/register.html", {
+            return render(request, "chat/register.html", {
                 "message": "Passwords must match."
             })
 
@@ -54,10 +54,10 @@ def register(request):
             user = User.objects.create_user(username, email, password)
             user.save()
         except IntegrityError:
-            return render(request, "network/register.html", {
+            return render(request, "chat/register.html", {
                 "message": "Username already taken."
             })
         login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:
-        return render(request, "network/register.html")
+        return render(request, "chat/register.html")
