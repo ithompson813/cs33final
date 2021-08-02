@@ -61,3 +61,13 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "chat/register.html")
+
+
+
+
+
+
+
+
+def new_chat(request):
+    return HttpResponse("new chat pog")
