@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
+from .forms import NewGroupForm
 from .models import User
 
 
@@ -64,10 +65,16 @@ def register(request):
 
 
 
+def new_group(request):
+
+    if request.method == "GET":
+        form = NewGroupForm
+        return render(request, "chat/new_group.html")
+    
+    elif request.method == "POST":
+        return HttpResponse("group made")
+        
 
 
 
-
-
-def new_chat(request):
-    return HttpResponse("new chat pog")
+    return HttpResponse("error")
