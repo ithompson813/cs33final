@@ -2,6 +2,13 @@
 
 {% block body %}
 
-    hi
+<form action="" method="POST">
+
+    <!-- Form details can be found in forms.py -->
+    {% csrf_token %}
+    {{form}}
+    <input type="submit">
+
+</form>
 
 {% endblock %}

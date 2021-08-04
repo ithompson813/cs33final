@@ -12,7 +12,7 @@
 
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">Chat</a>
+            <a class="navbar-brand" href="{% url 'index' %}">Chat</a>
           
             <div>
               <ul class="navbar-nav mr-auto">
@@ -39,23 +39,43 @@
                 {% endif %}
               </ul>
             </div>
-          </nav>
+        </nav>
+
+        {% if user.is_authenticated %} 
+            <div class="row">
+                <div class="sidebar col-lg-2 col-md-3" style="margin-bottom: -100%; background-color: #f8f9fa;">
+
+                    <div>
+                        <a href="{% url 'new_group' %}">New Group</a>
+                    </div>
+
+                    <div>
+
+                        <h3>Active Groups</h3>
+
+                        <div id="groups-view">
+                        </div>
 
 
-        <div class="row">
-            <div class="sidebar col-lg-2 col-md-3">
-                <div>
-                    <a href="{% url 'new_group' %}">New Group</a>
+                    {% else %}
+                        <h1> Sign in to chat! </h1>
+                    {% endif %}  
+                        
+                    </div>
+
                 </div>
-                <div>
-                    <a href="">Active Group</a>
+
+                <div class="col-sm-8">       <!-- <div class="main col-lg-10 col-md-9"> -->
+                    {% block body %}
+                    {% endblock %}
                 </div>
+
             </div>
-            <div class="main col-lg-10 col-md-9">
-                {% block body %}
-                {% endblock %}
-            </div>
-        </div>
+
+            {% block script %}
+                <script src="{% static 'chat/chat.js' %}"></script>
+            {% endblock %}
+
 
     </body>
 </html>

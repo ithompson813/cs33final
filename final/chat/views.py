@@ -1,15 +1,21 @@
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
+from django.http.response import JsonResponse
+from django.shortcuts import redirect, render
 from django.urls import reverse
 
 from .forms import NewGroupForm
-from .models import User
+from .models import User, Group, Message
 
 
 def index(request):
-    return render(request, "chat/index.html")
+
+    groups = Group.objects.filter(users__username=request.user.username)
+
+    return render(request, "chat/index.html", {
+        "groups": groups
+    })
 
 
 def login_view(request):
@@ -67,14 +73,59 @@ def register(request):
 
 def new_group(request):
 
+    # if received as a GET request, load new_group page with NewGroupForm
+    # NewGroupForm is defined in forms.py
     if request.method == "GET":
-        form = NewGroupForm
-        return render(request, "chat/new_group.html")
+
+        return render(request, "chat/new_group.html", {
+
+            "form": NewGroupForm()
+
+        })
+
     
     elif request.method == "POST":
-        return HttpResponse("group made")
+
+        # store data received in NewGroupForm
+        form = NewGroupForm(request.POST)
         
+        # check data validity
+        if form.is_valid():
 
+            # assign data to variables
+            form_name = form.cleaned_data["name"]
+            form_users = form.cleaned_data["invited_users"]
 
+            group = Group(name=form_name)
+            group.save()
+
+            group.users.add(*form_users)
+            group.users.add(request.user)
+            group.save()
+
+            return HttpResponseRedirect(reverse("index"))
+
+        # if data is invalid, return user to form
+        else: 
+            return render(request, "chat/new_group.html", {
+                "form": form
+            })
 
     return HttpResponse("error")
+
+
+def get_groups(request):
+
+    # get groups that current user has access to
+    groups = Group.objects.filter(users__username=request.user.username)
+
+    # return JSON data
+    return JsonResponse([group.serialize() for group in groups], safe=False)
+
+
+def get_messages(request, id):
+
+    group_object = Group.objects.get(id=int(id))
+    messages = Message.objects.filter(group = group_object)
+
+    return JsonResponse([message.serialize() for message in messages], safe=False)

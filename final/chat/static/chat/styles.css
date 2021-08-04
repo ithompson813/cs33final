@@ -1,11 +1,30 @@
-/* Fixed sidenav, full height */
-.sidenav {
-    height: 100%;
-    width: 200px;
-    position: fixed;
-    z-index: 1;
-    top: 100;
-    left: 0;
-    overflow-x: hidden;
-    padding-top: 20px;
-  }
+textarea
+{
+  border:1px solid #999999;
+  width:100%;
+  margin:5px 0;
+  padding:3px;
+}
+
+.top {
+
+  position: fixed;
+  top: 0px;
+
+}
+
+
+.bottom {
+  position: fixed;
+  bottom: 0px;
+  display: none;
+  
+}
+
+
+.sidebar{
+
+  margin-bottom: -100%; 
+  background-color: #f8f9fa;
+
+}
