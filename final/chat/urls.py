@@ -14,5 +14,6 @@ urlpatterns = [
 
     # api calls
     path("groups", views.get_groups, name="get_groups"),
-    path("messages/<str:id>", views.get_messages, name="get_messages")
+    path("messages/<str:id>", views.get_messages, name="get_messages"),
+    path("post_chat", views.post_chat, name="post_chat")
 ]

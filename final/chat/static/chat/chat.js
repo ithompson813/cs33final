@@ -1,6 +1,13 @@
 document.addEventListener('DOMContentLoaded', function(){
 
     get_groups();
+    update_chat();
+
+    document.querySelector('#chat_button').addEventListener('click', function(){
+
+        post_chat();
+
+    })
 
 })
 
@@ -15,7 +22,7 @@ function get_groups(){
     .then(response => response.json())
     .then(group => {
 
-        console.log(group);
+        //console.log(group);
 
         // for each group received, write data to html
         for (let i = 0; i < group.length; i++){
@@ -27,7 +34,7 @@ function get_groups(){
             name_div.addEventListener('click', function(){
                 
                 //get_messages function defined below
-                get_messages(group[i]['id'])
+                get_messages(group[i]['id']);
             })
             
             // write data to page
@@ -43,6 +50,8 @@ function get_groups(){
 
 function get_messages(id){
 
+    document.querySelector('#messages-view').setAttribute('name', `${id}`);
+
     // clear previous messages
     while(document.querySelector('#messages-view').firstChild) {
         document.querySelector('#messages-view').removeChild(document.querySelector('#messages-view').firstChild);
@@ -55,7 +64,7 @@ function get_messages(id){
     .then(response => response.json())
     .then(messages => {
 
-        console.log(messages)
+        //console.log(messages)
 
         // display each message
         for (let i = 0; i < messages.length; i++){
@@ -68,5 +77,37 @@ function get_messages(id){
         }
 
     })
+
+}
+
+
+function post_chat(){
+
+    message = document.querySelector('#chatbox').value;
+    group_id = document.querySelector('#messages-view').getAttribute('name');
+
+    fetch('/post_chat', {
+        method: 'POST',
+        body: JSON.stringify({
+            content: message,
+            group: group_id
+        })
+    }) .then (result => {
+
+        get_messages(group_id);
+        document.querySelector('#chatbox').value = ""
+        console.log(result)
+
+    })
+}
+
+
+function update_chat(){
+
+    setInterval(function(){ 
+
+        get_messages(document.querySelector('#messages-view').getAttribute('name'))
+       
+    }, 3000);
 
 }
