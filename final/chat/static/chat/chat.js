@@ -1,16 +1,26 @@
+
+// gloabal variable last_update tracks the most recent time the message log was udpated
+// this is used to determine if a new message is in the log and needs to be refreshed
+// see update_chat functin, defined below
+let last_update = new Date();
+
+
 document.addEventListener('DOMContentLoaded', function(){
 
+    //immediately load available groups for user
     get_groups();
+
+    //begin chat update function which calls at an interval if conditions are met, defined below
     update_chat();
 
+    //add onclick event to the chat button to post a new chat message
     document.querySelector('#chat_button').addEventListener('click', function(){
 
         post_chat();
 
     })
-
+ 
 })
-
 
 
 
@@ -52,6 +62,7 @@ function get_messages(id){
 
     document.querySelector('#messages-view').setAttribute('name', `${id}`);
 
+
     // clear previous messages
     while(document.querySelector('#messages-view').firstChild) {
         document.querySelector('#messages-view').removeChild(document.querySelector('#messages-view').firstChild);
@@ -64,17 +75,20 @@ function get_messages(id){
     .then(response => response.json())
     .then(messages => {
 
-        //console.log(messages)
-
         // display each message
         for (let i = 0; i < messages.length; i++){
 
+            // assign data to a div
             let message_div = document.createElement('div')
             message_div.innerHTML = `${messages[i]['creator']} said: ${messages[i]['content']}`
 
-            document.querySelector('#messages-view').appendChild(message_div)
+            // write data to top of message-view box
+            document.querySelector('#messages-view').insertBefore(message_div, document.querySelector('#messages-view').firstChild)
 
         }
+
+        //update last_update to now
+        last_update = new Date()
 
     })
 
@@ -83,9 +97,11 @@ function get_messages(id){
 
 function post_chat(){
 
+    // get info from html page
     message = document.querySelector('#chatbox').value;
     group_id = document.querySelector('#messages-view').getAttribute('name');
 
+    // pass info to database using an API call
     fetch('/post_chat', {
         method: 'POST',
         body: JSON.stringify({
@@ -94,20 +110,49 @@ function post_chat(){
         })
     }) .then (result => {
 
+        // refresh chat
         get_messages(group_id);
-        document.querySelector('#chatbox').value = ""
-        console.log(result)
 
+        //clear the chatbox
+        document.querySelector('#chatbox').value = "";
     })
 }
 
 
 function update_chat(){
 
+    // at a set interval, check if the chat needs to be refreshed
     setInterval(function(){ 
 
-        get_messages(document.querySelector('#messages-view').getAttribute('name'))
-       
-    }, 3000);
+        // if a group's view is displayed
+        if (document.querySelector('#messages-view').hasAttribute('name')){
+
+            // track id
+            id = document.querySelector('#messages-view').getAttribute('name')
+
+            // call API to get messages
+            fetch(`/messages/${id}`)
+            .then(response => response.json())
+            .then(messages => {
+
+                // check the time of the most recent post
+                let latest_time = new Date(messages[messages.length-1]['timestamp']);
+
+                // if most recent post was made after last chat update, refresh chat
+                if (last_update < latest_time){
+
+                    // refresh messages
+                    get_messages(document.querySelector('#messages-view').getAttribute('name'))
+
+                    // update last update to now
+                    last_update = new Date()
+
+                }
+                
+            })
+        }
+      
+    // this check is performed every 2 seconds
+    }, 2000);
 
 }

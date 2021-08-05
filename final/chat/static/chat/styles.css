@@ -15,8 +15,11 @@ textarea
 
 
 .bottom {
+
   position: fixed;
   bottom: 0px;
+  padding: 1%;
+  padding-bottom: 3%;
   display: none;
   
 }
@@ -24,7 +27,6 @@ textarea
 
 .sidebar{
 
-  margin-bottom: -100%; 
   background-color: #f8f9fa;
 
 }
@@ -34,4 +36,31 @@ textarea
   color:  #0645AD;
   text-decoration: underline;
 
+}
+
+#groups-container{
+
+  background-color: #f8f9fa;
+
+}
+
+#messages-view {
+  height: 80%;
+  width: 95%; 
+  border: 1px solid #4e4e4e;
+  overflow: auto;
+  padding: 1%;
+}
+
+@media screen and (min-height: 400px) {
+  #messages-view {
+    height: 350px;
+  }
+}
+
+
+@media screen and (max-height: 600px) {
+  #messages-view {
+    height: 550px;
+  }
 }

@@ -5,6 +5,7 @@
 <html lang="en">
     <head>
         <title>{% block title %}{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=.8">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <link href="{% static 'chat/styles.css' %}" rel="stylesheet">
     </head>
@@ -43,7 +44,7 @@
 
         {% if user.is_authenticated %} 
             <div class="row">
-                <div class="sidebar col-lg-2 col-md-3" style="margin-bottom: -100%; background-color: #f8f9fa;">
+                <div class="sidebar col-lg-2 col-md-3" id="groups-container">
 
                     <div>
                         <a href="{% url 'new_group' %}">New Group</a>
