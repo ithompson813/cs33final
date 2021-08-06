@@ -63,10 +63,12 @@ The post_chat() function finishes by immediately refreshing the chat by recallin
 
 Updating The Chat
 
-Because many users are able to write simultaneously into one chatroom, the messages-view would need to be continuously updated to show all messages. This is done by starting an interval function as soon as the page is loaded. The update_chat() function houses this process.
+Because many users are able to write simultaneously into one chatroom, the messages-view needs to be continuously updated to show all messages. This is done by starting an interval function as soon as the page is loaded. The update_chat() function houses this process.
 
 Update_chat() utilizes a global variable called last_update. Last_update represents the datetime when the messages in the chatroom were last updated. Last_update is assigned to the current time whenever get_messages() is called. 
 
 The update_chat() function makes the same API call as get_messages() to get the relevant messages for the current group. The function then checks the timestamp for the most recent message and determines if it was posted after the last_update time. If this is true, then the chat is out of date and function rewrites the chat by calling get_messages. This check is performed every two seconds. 
 
 
+
+Thank you Logan and whoever else may be reading this for a great semester!

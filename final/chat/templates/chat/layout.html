@@ -10,7 +10,7 @@
         <link href="{% static 'chat/styles.css' %}" rel="stylesheet">
     </head>
     <body>
-        
+        <!-- Top Bar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <a class="navbar-brand" href="{% url 'index' %}">Chat</a>
           
@@ -35,6 +35,7 @@
             </div>
         </nav>
 
+        <!-- Side Bar -->
         {% if user.is_authenticated %} 
             <div class="row">
                 <div class="sidebar col-lg-2 col-md-3" id="groups-container">

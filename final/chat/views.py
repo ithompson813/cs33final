@@ -13,12 +13,7 @@ from .models import User, Group, Message
 
 
 def index(request):
-
-    groups = Group.objects.filter(users__username=request.user.username)
-
-    return render(request, "chat/index.html", {
-        "groups": groups
-    })
+    return render(request, "chat/index.html")
 
 
 def login_view(request):
