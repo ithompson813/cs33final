@@ -19,7 +19,7 @@ textarea
   position: fixed;
   bottom: 0px;
   padding: 1%;
-  padding-bottom: 3%;
+  padding-bottom: 15%;
   display: none;
   
 }
@@ -45,22 +45,24 @@ textarea
 }
 
 #messages-view {
-  height: 80%;
+  height: 105%;
+  max-height: 25%;
   width: 95%; 
   border: 1px solid #4e4e4e;
   overflow: auto;
   padding: 1%;
 }
 
+
 @media screen and (min-height: 400px) {
   #messages-view {
-    height: 350px;
+    max-height: 350px;
   }
 }
 
 
 @media screen and (max-height: 600px) {
   #messages-view {
-    height: 550px;
+    max-height: 550px;
   }
 }

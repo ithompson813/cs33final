@@ -3,9 +3,11 @@
 {% block body %}
 
     <!-- Messages will be displayed in a scrollable box here -->
+    {% if user.is_authenticated %}
     <div id="messages-view">
         <h1> Select or create a group to view messages</h1>
     </div>
+    {% endif %}
 
     <!-- A chatbox with a clickable button to post a new message -->
     <div id="chat-view" class="bottom">

@@ -1,7 +1,7 @@
 
 // gloabal variable last_update tracks the most recent time the message log was udpated
 // this is used to determine if a new message is in the log and needs to be refreshed
-// see update_chat functin, defined below
+// see update_chat function, defined below
 let last_update = new Date();
 
 
@@ -32,8 +32,6 @@ function get_groups(){
     .then(response => response.json())
     .then(group => {
 
-        //console.log(group);
-
         // for each group received, write data to html
         for (let i = 0; i < group.length; i++){
 
@@ -61,7 +59,6 @@ function get_groups(){
 function get_messages(id){
 
     document.querySelector('#messages-view').setAttribute('name', `${id}`);
-
 
     // clear previous messages
     while(document.querySelector('#messages-view').firstChild) {
